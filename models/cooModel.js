@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const cooSchema = new mongoose.Schema({
+  orderNumber:String,
   exporterName: String,
   exporterAddress: String,
   exporterContact: String,
