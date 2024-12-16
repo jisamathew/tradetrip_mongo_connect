@@ -143,7 +143,7 @@ router.get('/coo/status/:orderNumber', async (req, res) => {
     const coo = await COO.findOne({ orderNumber });
 
     if (coo) {
-      return res.status(200).json({ found: true, status: coo.status, cooDetails: coo.cooDetails });
+      return res.status(200).json({ found: true, status: coo.status, cooDetails: coo });
     } else {
       return res.status(200).json({ found: false });
     }
