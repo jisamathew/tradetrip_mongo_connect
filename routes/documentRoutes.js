@@ -137,5 +137,19 @@ router.get('/coo/:id', async (req, res) => {
     res.status(500).json({ message: 'Error fetching COO application', error });
   }
 });
+router.get('/coo/status/:orderNumber', async (req, res) => {
+  try {
+    const { orderNumber } = req.params;
+    const coo = await COO.findOne({ orderNumber });
 
+    if (coo) {
+      return res.status(200).json({ found: true, status: coo.status, cooDetails: coo.cooDetails });
+    } else {
+      return res.status(200).json({ found: false });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 module.exports = router;
