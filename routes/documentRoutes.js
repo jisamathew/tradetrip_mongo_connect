@@ -3,11 +3,13 @@ const multer = require('multer');
 const Document = require('../models/Document');
 const COO = require('../models/cooModel'); // Import COO schema
 // const nodemailer = require('nodemailer');
+
 const router = express.Router();
 
 // File upload settings
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
 
 // Upload a document
 router.post('/upload', upload.single('file'), async (req, res) => {
