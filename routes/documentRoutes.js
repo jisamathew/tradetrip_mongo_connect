@@ -10,6 +10,7 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+const { verifyRole } = require('../middleware/authMiddleware');
 
 // Upload a document
 router.post('/upload', upload.single('file'), async (req, res) => {
@@ -49,7 +50,7 @@ router.get('/document/:id', async (req, res) => {
   }
 });
 // Apply for COO
-router.post('/coo/apply', async (req, res) => {
+router.post('/coo/apply', verifyRole('exporter'), async (req, res) => {
   try {
     const newCOO = new COO(req.body);
     await newCOO.save();
@@ -61,7 +62,7 @@ router.post('/coo/apply', async (req, res) => {
 });
 
 // Get all pending COO applications
-router.get('/coo/pending', async (req, res) => {
+router.get('/coo/pending',verifyRole('certifier'), async (req, res) => {
   try {
     const pendingApplications = await COO.find({ status: 'Pending' });
     res.status(200).json(pendingApplications);
@@ -72,7 +73,7 @@ router.get('/coo/pending', async (req, res) => {
 });
 
 // Approve a COO application
-router.put('/coo/approve/:id', async (req, res) => {
+router.put('/coo/approve/:id', verifyRole('certifier'),async (req, res) => {
   try {
     const { id } = req.params;
     const updatedCOO = await COO.findByIdAndUpdate(id, req.body, { new: true });
@@ -114,7 +115,7 @@ router.put('/coo/approve/:id', async (req, res) => {
 // });
 
 // Get all approved COO applications
-router.get('/coo/approved', async (req, res) => {
+router.get('/coo/approved', verifyRole('certifier'), async (req, res) => {
   try {
     const approvedCOOs = await COO.find({ status: 'Approved' });
     res.status(200).json(approvedCOOs);
@@ -124,7 +125,7 @@ router.get('/coo/approved', async (req, res) => {
   }
 });
 // Get COO application by ID
-router.get('/coo/:id', async (req, res) => {
+router.get('/coo/:id', verifyRole('certifier'),async (req, res) => {
   try {
     const { id } = req.params;
     const coo = await COO.findById(id);

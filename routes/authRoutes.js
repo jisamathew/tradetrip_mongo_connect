@@ -51,6 +51,7 @@ router.post('/signup',[
           if (!isPasswordValid) return res.status(401).json({ error: 'Invalid password' });
       
           const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+          console.log(token)
           res.json({ message: 'Login successful', token });
         } catch (error) {
           res.status(500).json({ error: 'Internal server error' });
