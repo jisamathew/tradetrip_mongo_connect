@@ -50,7 +50,7 @@ router.get('/document/:id', async (req, res) => {
   }
 });
 // Apply for COO
-router.post('/coo/apply', verifyRole('exporter'), async (req, res) => {
+router.post('/coo/apply', async (req, res) => {
   try {
     const newCOO = new COO(req.body);
     await newCOO.save();
