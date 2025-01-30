@@ -141,6 +141,8 @@ router.post(
           // res.json({ message: 'Login successful', token });
    
           verifyCertificate(user._id, email).then((result) => {
+            console.log('Verify Certificate result')
+            console.log(result)
             if (!result.certificate) {
               return res.status(401).json({ error: 'Certificate not found. Please register again.' });
               }
