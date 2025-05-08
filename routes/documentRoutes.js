@@ -235,7 +235,8 @@ const canonicalizeJSON = (json) => {
 };
 
 // Apply for a COO
-router.post('/coo/apply', verifyRole('exporter'), async (req, res) => {
+router.post('/coo/apply',  async (req, res) => {
+// router.post('/coo/apply', verifyRole('exporter'), async (req, res) => {
     try {
         const db = getDB();
         console.log('req')
