@@ -233,10 +233,35 @@ const canonicalizeJSON = (json) => {
 
     return JSON.stringify(sortKeysRecursively(json));
 };
+// Apply for a COO - done by a seller from tradetrip app
+router.post('/coo/applyCOO',  async (req, res) => {
+    try {
+        const db = getDB();
+        console.log('req')
+        // console.log(req.user.id)
+        // const { id } = req.user; // Assuming `req.user` contains authenticated user data
+        // console.log('gettign user id:' + id)
+        // Access form data
+        const formData = req.body;
+        const newCOO = {
+            ...formData,
+            // exporterId: id,
+            // exporterSignature,
+            status: 'Pending',
+            createdAt: new Date(),
+        };
 
-// Apply for a COO
-router.post('/coo/apply',  async (req, res) => {
-// router.post('/coo/apply', verifyRole('exporter'), async (req, res) => {
+        const result = await db.collection('coo_documents').insertOne(newCOO);
+        res.status(201).json({ message: 'COO application submitted successfully', documentId: result.insertedId });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error submitting application', error });
+    }
+});
+
+
+// Apply for a COO - done by an exporter within this app
+router.post('/coo/apply', verifyRole('exporter'), async (req, res) => {
     try {
         const db = getDB();
         console.log('req')
